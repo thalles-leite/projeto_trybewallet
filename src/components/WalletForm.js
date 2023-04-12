@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrentValue } from '../redux/actions';
+import { fetchCurrentValue, updateExpenseWallet } from '../redux/actions';
 
 const INITIAL_STATE = {
+
   value: '',
   description: '',
   currency: 'USD',
   method: 'Dinheiro',
   tag: 'Alimentação',
   exchangeRates: '',
+  editing: false,
 };
 class WalletForm extends Component {
   state = INITIAL_STATE;
+
+  componentDidUpdate(prevProps) {
+    const { expenses, idToEdit } = this.props;
+    const prevIdToEdit = prevProps.idToEdit;
+
+    if (idToEdit !== prevIdToEdit) {
+      const filteredExpense = expenses.find((expense) => expense.id === idToEdit);
+
+      this.setState({
+        value: filteredExpense.value,
+        description: filteredExpense.description,
+        currency: filteredExpense.currency,
+        method: filteredExpense.method,
+        tag: filteredExpense.tag,
+        editing: true,
+      });
+    }
+  }
 
   handleChange = ({ target }) => {
     this.setState({
@@ -21,10 +41,20 @@ class WalletForm extends Component {
   };
 
   render() {
-    const { currencies, dispatch, expenses } = this.props;
-
+    const { currencies, dispatch, expenses, editor, idToEdit } = this.props;
+    const { editing } = this.state;
+    const filteredExpense = expenses.find((expense) => expense.id === idToEdit);
+    if (filteredExpense && !editing && editor) {
+      this.setState({
+        value: filteredExpense.value,
+        description: filteredExpense.description,
+        currency: filteredExpense.currency,
+        method: filteredExpense.method,
+        tag: filteredExpense.tag,
+        editing: true,
+      });
+    }
     const { value, description, currency, method, tag } = this.state;
-
     return (
       <>
         <div>WalletForm</div>
@@ -85,17 +115,33 @@ class WalletForm extends Component {
           <option>Transporte</option>
           <option>Saúde</option>
         </select>
+        {editor ? (
+          <button
+            type="button"
+            onClick={ () => {
+              dispatch(updateExpenseWallet(
+                { id: idToEdit, value, description, currency, method, tag },
+              ));
+              this.setState(INITIAL_STATE);
+            } }
+          >
+            Editar despesa
+          </button>
+        )
+          : (
+            <button
+              type="button"
+              onClick={ () => {
+                dispatch(
+                  fetchCurrentValue({
+                    value, description, currency, method, tag }, expenses),
+                );
+                this.setState(INITIAL_STATE);
+              } }
+            >
+              Adicionar despesa
 
-        <button
-          type="button"
-          onClick={ () => {
-            dispatch(fetchCurrentValue(this.state, expenses));
-            this.setState(INITIAL_STATE);
-          } }
-        >
-          Adicionar despesa
-
-        </button>
+            </button>)}
       </>
     );
   }
@@ -104,11 +150,15 @@ class WalletForm extends Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  editor: state.wallet.editor,
+  idToEdit: state.wallet.idToEdit,
+
 });
 WalletForm.propTypes = {
   currencies: PropTypes.string.isRequired,
-  expenses: PropTypes.shape({
-  }).isRequired,
+  expenses: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.bool.isRequired,
 };
 export default connect(mapStateToProps)(WalletForm);

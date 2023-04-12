@@ -26,7 +26,29 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: [...newExpenses],
     };
   }
+  case 'EDIT_EXPENSES_WALLET': {
+    const { id } = action.wallet;
+    return {
+      ...state,
+      editor: true,
+      idToEdit: id,
+    };
+  }
 
+  case 'UPDATE_EXPENSE_WALLET': {
+    const updatedExpenses = state.expenses.map((expense) => {
+      if (expense.id === action.wallet.id) {
+        return ({ ...action.wallet, exchangeRates: expense.exchangeRates });
+      }
+      return expense;
+    });
+    console.log(state);
+    return {
+      ...state,
+      expenses: [...updatedExpenses],
+      editor: false,
+    };
+  }
   default:
     return state;
   }

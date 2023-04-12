@@ -101,4 +101,54 @@ describe('Página de login', () => {
       userEvent.click(deleteButton);
     });
   });
+
+  it('Verifica a edição', async () => {
+    renderWithRouterAndRedux(<Wallet />);
+    const newValue = '200';
+    await waitFor(() => {
+      const selectElement = screen.getByTestId('currency-input');
+      expect(selectElement).toBeInTheDocument();
+
+      // Seleciona o primeiro elemento do selectElement
+      const firstOption = selectElement.querySelector('option:first-of-type');
+      expect(firstOption.value).toBe('USD');
+    });
+
+    const valueInput = screen.getAllByRole('textbox')[0];
+    const descriptionInput = screen.getByTestId('description-input');
+    const buttonAdd = screen.getByRole('button', {
+      name: /adicionar despesa/i,
+    });
+
+    userEvent.type(valueInput, '12');
+    userEvent.type(descriptionInput, 'Lanche');
+
+    userEvent.click(buttonAdd);
+
+    await waitFor(() => {
+      const editButton = screen.getByRole('button', {
+        name: /editar despesa/i,
+      });
+      expect(editButton).toBeInTheDocument();
+      userEvent.click(editButton);
+    });
+
+    const valueInput2 = screen.getByTestId('value-input');
+    expect(valueInput2.value).toBe('12');
+
+    userEvent.clear(valueInput2);
+    userEvent.type(valueInput2, newValue);
+    const buttonEdit = screen.getAllByRole('button', {
+      name: /editar despesa/i,
+    });
+
+    expect(buttonEdit).toHaveLength(2);
+    userEvent.click(buttonEdit[0]);
+
+    const newValueUpdated = screen.getByRole('cell', {
+      name: /200\.00/i,
+    });
+
+    expect(newValueUpdated).toBeInTheDocument();
+  });
 });

@@ -20,5 +20,5 @@ class Wallet extends React.Component {
     );
   }
 }
-const mapStateToProps = (store) => ({});
-export default connect(mapStateToProps)(Wallet);
+
+export default connect()(Wallet);

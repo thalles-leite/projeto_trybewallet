@@ -1,14 +1,20 @@
 // Coloque aqui suas actions
 export const ADD_USER = 'ADD_USER';
-export const ADD_WALLET = 'ADD_WALLET';
+export const ADD_CURRENCIES_WALLET = 'ADD_CURRENCIES_WALLET';
+export const ADD_EXPENSES_WALLET = 'ADD_EXPENSES_WALLET';
 
 export const addUser = (user) => ({
   type: ADD_USER,
   user,
 });
 
-export const addWallet = (wallet) => ({
-  type: ADD_WALLET,
+export const addCurrenciesWallet = (wallet) => ({
+  type: ADD_CURRENCIES_WALLET,
+  wallet,
+});
+
+export const addExpensesWallet = (wallet) => ({
+  type: ADD_EXPENSES_WALLET,
   wallet,
 });
 
@@ -16,5 +22,18 @@ export const fetchCurrencies = () => async (dispatch) => {
   const response = await fetch('https://economia.awesomeapi.com.br/json/all');
   const data = await response.json();
   const arrayCurrencies = Object.keys(data).filter((currencie) => currencie !== 'USDT');
-  dispatch(addWallet({ currencies: arrayCurrencies }));
+  dispatch(addCurrenciesWallet({ currencies: arrayCurrencies }));
+};
+
+export const fetchCurrentValue = (estado, expenses) => async (dispatch) => {
+  const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+  const data = await response.json();
+
+  dispatch(addExpensesWallet(
+    { expenses: [
+      ...expenses,
+      { id: expenses.length, ...estado, exchangeRates: { ...data },
+      },
+    ] },
+  ));
 };

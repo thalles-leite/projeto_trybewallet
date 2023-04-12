@@ -13,7 +13,7 @@ class Header extends Component {
       const { ask } = exchangeRates[currency];
       return (acc + (value * ask));
     }, 0);
-    console.log(totalExpenses);
+
     return (
       <>
         <div>Header</div>

@@ -32,7 +32,7 @@ class Table extends Component {
                   .find((exange) => exange[0] === expense.currency);
                 const convertedValue = expense.value * currencyName[1].ask;
                 const valor = expense.value;
-                const { id } = expense;
+
                 return (
                   <tr key={ index }>
                     <td>{expense.description}</td>
@@ -47,7 +47,7 @@ class Table extends Component {
                       <button
                         type="button"
                         data-testid="delete-btn"
-                        onClick={ ({ target }) => {
+                        onClick={ () => {
                           dispatch(removeExpenseWallet(expense));
                         } }
                       >
@@ -67,10 +67,12 @@ class Table extends Component {
 }
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+
 });
 
 Table.propTypes = {
   expenses: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(Table);

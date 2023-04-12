@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { removeExpenseWallet } from '../redux/actions';
 
 class Table extends Component {
   render() {
-    const { expenses } = this.props;
+    const { expenses, dispatch } = this.props;
+    console.log(expenses);
     return (
       <>
         <div>Table</div>
@@ -30,6 +32,7 @@ class Table extends Component {
                   .find((exange) => exange[0] === expense.currency);
                 const convertedValue = expense.value * currencyName[1].ask;
                 const valor = expense.value;
+                const { id } = expense;
                 return (
                   <tr key={ index }>
                     <td>{expense.description}</td>
@@ -40,6 +43,18 @@ class Table extends Component {
                     <td>{parseFloat(currencyName[1].ask).toFixed(2)}</td>
                     <td>{convertedValue.toFixed(2)}</td>
                     <td>Real</td>
+                    <td>
+                      <button
+                        type="button"
+                        data-testid="delete-btn"
+                        onClick={ ({ target }) => {
+                          dispatch(removeExpenseWallet(expense));
+                        } }
+                      >
+                        Excluir
+                      </button>
+
+                    </td>
                   </tr>
                 );
               })

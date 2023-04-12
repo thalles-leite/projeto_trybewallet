@@ -2,6 +2,7 @@
 export const ADD_USER = 'ADD_USER';
 export const ADD_CURRENCIES_WALLET = 'ADD_CURRENCIES_WALLET';
 export const ADD_EXPENSES_WALLET = 'ADD_EXPENSES_WALLET';
+export const REMOVE_EXPENSES_WALLET = 'REMOVE_EXPENSES_WALLET';
 
 export const addUser = (user) => ({
   type: ADD_USER,
@@ -15,6 +16,11 @@ export const addCurrenciesWallet = (wallet) => ({
 
 export const addExpensesWallet = (wallet) => ({
   type: ADD_EXPENSES_WALLET,
+  wallet,
+});
+
+export const removeExpenseWallet = (wallet) => ({
+  type: REMOVE_EXPENSES_WALLET,
   wallet,
 });
 

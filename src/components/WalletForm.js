@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addExpensesWallet, fetchCurrentValue } from '../redux/actions';
+import PropTypes from 'prop-types';
+import { fetchCurrentValue } from '../redux/actions';
 
 const INITIAL_STATE = {
   value: '',
@@ -104,5 +105,10 @@ const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
 });
-
+WalletForm.propTypes = {
+  currencies: PropTypes.string.isRequired,
+  expenses: PropTypes.shape({
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
 export default connect(mapStateToProps)(WalletForm);

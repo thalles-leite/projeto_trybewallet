@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addUser } from '../redux/actions';
 
 class Login extends React.Component {
@@ -16,7 +17,7 @@ class Login extends React.Component {
 
   render() {
     const { email, password } = this.state;
-    const { history, user, dispatch } = this.props;
+    const { history, dispatch } = this.props;
     const regEmail = /^\S+@\S+\.\S+$/;
     const validationEmail = regEmail.test(email);
     const MIN_PASSWORD = 6;
@@ -64,4 +65,8 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
+Login.propTypes = {
+  history: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
 export default connect(mapStateToProps)(Login);

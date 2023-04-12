@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import { removeExpenseWallet } from '../redux/actions';
 
 class Table extends Component {
+  itemRemove = (expensParam) => {
+    const { dispatch } = this.props;
+    dispatch(removeExpenseWallet(expensParam));
+  };
+
   render() {
-    const { expenses, dispatch } = this.props;
+    const { expenses } = this.props;
     console.log(expenses);
     return (
       <>
@@ -26,7 +31,7 @@ class Table extends Component {
           </thead>
           <tbody>
             {
-              expenses?.map((expense, index) => {
+              expenses.map((expense) => {
                 const { exchangeRates } = expense;
                 const currencyName = Object.entries(exchangeRates)
                   .find((exange) => exange[0] === expense.currency);
@@ -34,7 +39,7 @@ class Table extends Component {
                 const valor = expense.value;
 
                 return (
-                  <tr key={ index }>
+                  <tr key={ expense.id }>
                     <td>{expense.description}</td>
                     <td>{expense.tag}</td>
                     <td>{expense.method}</td>
@@ -47,11 +52,9 @@ class Table extends Component {
                       <button
                         type="button"
                         data-testid="delete-btn"
-                        onClick={ () => {
-                          dispatch(removeExpenseWallet(expense));
-                        } }
+                        onClick={ () => this.itemRemove(expense) }
                       >
-                        Excluir
+                        Editar/Excluir
                       </button>
 
                     </td>
@@ -67,7 +70,6 @@ class Table extends Component {
 }
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
-
 });
 
 Table.propTypes = {

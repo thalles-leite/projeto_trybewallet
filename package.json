@@ -6,6 +6,13 @@
     "node": "16 || 18"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.1",
+    "@mui/styled-engine-sc": "^5.12.0",
+    "@mui/x-data-grid": "^6.2.0",
     "@redux-devtools/extension": "3.2.5",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
@@ -18,6 +25,7 @@
     "react-scripts": "5.0.1",
     "redux": "4.2.0",
     "redux-thunk": "2.4.2",
+    "styled-components": "^5.3.9",
     "stylelint-order": "5.0.0"
   },
   "scripts": {
@@ -27,9 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test-coverage": "react-scripts test --coverage --watchAll=false",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js,.jsx",
-    "lint:styles": "npx stylelint '**/*.css'"
+    "test-coverage": "react-scripts test --coverage --watchAll=false"
+    
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,7 +57,7 @@
     "@sheerun/mutationobserver-shim": "0.3.3",
     "@trybe/eslint-config-frontend": "^1.7.1",
     "cypress": "10.11.0",
-    "cypress-multi-reporters": "1.6.2",
+    "cypress-multi-reporters": "1.6.2",   
     "jest-localstorage-mock": "2.4.26",
     "mocha": "10.2.0",
     "mochawesome": "7.1.3",

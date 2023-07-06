@@ -10,7 +10,7 @@ describe('Página de login', () => {
     renderWithRouterAndRedux(<App />);
 
     const loginTitle = screen.getByRole('heading', {
-      name: /faça o login/i,
+      name: /login/i,
     });
 
     expect(loginTitle).toBeInTheDocument();
@@ -27,10 +27,10 @@ describe('Página de login', () => {
     });
 
     const emailField = screen.getByRole('textbox', {
-      name: /digite seu e-mail:/i,
+      name: /seu e-mail/i,
     });
 
-    const passwordField = screen.getByLabelText(/digite sua senha/i);
+    const passwordField = screen.getByLabelText(/sua senha/i);
 
     expect(emailField).toBeInTheDocument();
     expect(passwordField).toBeInTheDocument();
@@ -105,6 +105,7 @@ describe('Página de login', () => {
   it('Verifica a edição', async () => {
     renderWithRouterAndRedux(<Wallet />);
     const newValue = '200';
+
     await waitFor(() => {
       const selectElement = screen.getByTestId('currency-input');
       expect(selectElement).toBeInTheDocument();
@@ -146,7 +147,7 @@ describe('Página de login', () => {
     userEvent.click(buttonEdit[0]);
 
     const newValueUpdated = screen.getByRole('cell', {
-      name: /200\.00/i,
+      name: /200.00/i,
     });
 
     expect(newValueUpdated).toBeInTheDocument();

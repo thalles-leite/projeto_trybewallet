@@ -5,6 +5,15 @@ export const ADD_EXPENSES_WALLET = 'ADD_EXPENSES_WALLET';
 export const REMOVE_EXPENSES_WALLET = 'REMOVE_EXPENSES_WALLET';
 export const EDIT_EXPENSES_WALLET = 'EDIT_EXPENSES_WALLET';
 export const UPDATE_EXPENSE_WALLET = 'UPDATE_EXPENSE_WALLET';
+export const CHANGE_THEME = 'CHANGE_THEME';
+
+// Alterar tema
+
+export const changeTheme = (theme) => ({
+  type: CHANGE_THEME,
+  theme,
+});
+
 export const addUser = (user) => ({
   type: ADD_USER,
   user,
@@ -47,8 +56,7 @@ export const fetchCurrentValue = (estado, expenses) => async (dispatch) => {
   const data = await response.json();
 
   dispatch(addExpensesWallet(
-    { expenses: [
-      ...expenses,
+    { expenses: [...expenses,
       { id: expenses.length, ...estado, exchangeRates: { ...data },
       },
     ] },

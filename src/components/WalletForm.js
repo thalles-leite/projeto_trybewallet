@@ -1,6 +1,25 @@
+/* eslint-disable react/jsx-max-depth */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+
+  Box,
+  Button,
+  Container,
+  Grid,
+  InputAdornment,
+  MenuItem,
+  Paper,
+  Select,
+  TextField } from '@mui/material';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import PaymentIcon from '@mui/icons-material/Payment';
+import LabelIcon from '@mui/icons-material/Label';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+
+import { green, orange } from '@mui/material/colors';
 import { fetchCurrentValue, updateExpenseWallet } from '../redux/actions';
 
 const INITIAL_STATE = {
@@ -56,93 +75,173 @@ class WalletForm extends Component {
     }
     const { value, description, currency, method, tag } = this.state;
     return (
-      <>
-        <div>WalletForm</div>
-
-        <input
-          name="value"
-          type="text"
-          data-testid="value-input"
-          placeholder="valor"
-          value={ value }
-          onChange={ this.handleChange }
-        />
-
-        <input
-          type="text"
-          data-testid="description-input"
-          name="description"
-          placeholder="descrição"
-          value={ description }
-          onChange={ this.handleChange }
-        />
-
-        <select
-          data-testid="currency-input"
-          name="currency"
-          value={ currency }
-          onChange={ this.handleChange }
+      <Container
+        disableGutters
+        sx={ {
+          mt: { xs: 10, sm: 10 },
+        } }
+      >
+        <Box
+          sx={ {
+            margin: 1,
+            padding: 2,
+          } }
+          component={ Paper }
+          elevation={ 3 }
         >
-          {currencies && (
-            currencies.map((currencie, index) => (
-              <option key={ index } value={ currencie }>
-                {currencie}
-              </option>
-            ))
-          )}
-        </select>
-
-        <select
-          data-testid="method-input"
-          name="method"
-          value={ method }
-          onChange={ this.handleChange }
-        >
-          <option>Dinheiro</option>
-          <option>Cartão de crédito</option>
-          <option>Cartão de débito</option>
-        </select>
-
-        <select
-          data-testid="tag-input"
-          name="tag"
-          value={ tag }
-          onChange={ this.handleChange }
-        >
-          <option>Alimentação</option>
-          <option>Lazer</option>
-          <option>Trabalho</option>
-          <option>Transporte</option>
-          <option>Saúde</option>
-        </select>
-        {editor ? (
-          <button
-            type="button"
-            onClick={ () => {
-              dispatch(updateExpenseWallet(
-                { id: idToEdit, value, description, currency, method, tag },
-              ));
-              this.setState(INITIAL_STATE);
+          <Grid
+            container
+            spacing={ 2 }
+            columns={ {
+              xs: 4, // 4 colunas até 600px
+              sm: 6, // 6 colunas até 900px
+              md: 13, // 12 colunas acima de 900px
             } }
           >
-            Editar despesa
-          </button>
-        )
-          : (
-            <button
-              type="button"
-              onClick={ () => {
-                dispatch(
-                  fetchCurrentValue({
-                    value, description, currency, method, tag }, expenses),
-                );
-                this.setState(INITIAL_STATE);
-              } }
-            >
-              Adicionar despesa
+            <Grid item xs={ 2 } sm={ 2 } md={ 1.8 }>
+              <TextField
+                fullWidth
+                required
+                label="valor"
+                name="value"
+                inputProps={ {
+                  'data-testid': 'value-input',
+                } }
+                value={ value }
+                onChange={ this.handleChange }
+              />
+            </Grid>
+            <Grid item xs={ 2 } sm={ 2 } md={ 2 }>
+              <TextField
+                label="descrição"
+                fullWidth
+                inputProps={ {
+                  'data-testid': 'description-input',
+                } }
+                name="description"
+                value={ description }
+                onChange={ this.handleChange }
+              />
+            </Grid>
+            <Grid item xs={ 2 } sm={ 2 } md={ 2 }>
+              <Select
+                inputProps={ {
+                  'data-testid': 'currency-input',
+                } }
+                name="currency"
+                fullWidth
+                value={ currency }
+                onChange={ this.handleChange }
+                // IconComponent={ CurrencyExchangeIcon }
+                startAdornment={
+                  <InputAdornment position="start">
+                    <CurrencyExchangeIcon />
+                  </InputAdornment>
+                }
+              >
+                {currencies && (
+                  currencies.map((currencie, index) => (
+                    <MenuItem key={ index } value={ currencie }>
+                      {currencie}
+                    </MenuItem>
+                  ))
+                )}
+              </Select>
+            </Grid>
+            <Grid item xs={ 2 } sm={ 2 } md={ 2 }>
+              <Select
+                fullWidth
+                inputProps={ {
+                  'data-testid': 'method-input',
 
-            </button>)}
-      </>
+                } }
+                name="method"
+                value={ method }
+                onChange={ this.handleChange }
+                startAdornment={
+                  <InputAdornment position="start">
+                    <PaymentIcon />
+                  </InputAdornment>
+                }
+              >
+                <MenuItem value="Dinheiro">Dinheiro</MenuItem>
+                <MenuItem value="Cartão de crédito">Cartão de crédito</MenuItem>
+                <MenuItem value="Cartão de débito">Cartão de débito</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={ 2 } sm={ 2 } md={ 2.2 }>
+              <Select
+                fullWidth
+                inputProps={ {
+                  'data-testid': 'tag-input',
+                } }
+                name="tag"
+                value={ tag }
+                onChange={ this.handleChange }
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LabelIcon />
+                  </InputAdornment>
+                }
+              >
+                <MenuItem value="Alimentação">Alimentação</MenuItem>
+                <MenuItem value="Lazer">Lazer</MenuItem>
+                <MenuItem value="Trabalho">Trabalho</MenuItem>
+                <MenuItem value="Transporte">Transporte</MenuItem>
+                <MenuItem value="Saúde">Saúde</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={ 2 } sm={ 2 } md={ 3 }>
+
+              {editor ? (
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  startIcon={ <TaskAltIcon /> }
+                  type="button"
+                  color="warning"
+                  sx={ {
+                    height: 1,
+                  } }
+                  onClick={ () => {
+                    dispatch(updateExpenseWallet(
+                      { id: idToEdit, value, description, currency, method, tag },
+                    ));
+                    this.setState(INITIAL_STATE);
+                  } }
+                >
+                  Editar despesa
+                </Button>
+              )
+                : (
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={ {
+                      height: '100%',
+                    } }
+                    type="button"
+                    startIcon={ <AddTaskIcon /> }
+                    onClick={ () => {
+                      dispatch(
+                        fetchCurrentValue(
+                          { value, description, currency, method, tag },
+                          expenses,
+                        ),
+                      );
+                      this.setState(INITIAL_STATE);
+                    } }
+                  >
+                    Adicionar despesa
+
+                  </Button>
+                )}
+            </Grid>
+
+          </Grid>
+        </Box>
+      </Container>
     );
   }
 }
